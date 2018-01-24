@@ -1,0 +1,23 @@
+{
+  "name": "sheety-model",
+  "version": "1.0.0",
+  "description": "Sheety Model is part of the SheetyApp suite.  Sheety Model contains the definitions of core models that are depended upon by the rest of the suite.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir dist --source-maps"
+  },
+  "author": "Adam Berger",
+  "license": "UNLICENSED",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "immutable": "^3.8.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
