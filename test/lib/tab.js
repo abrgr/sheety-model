@@ -6,10 +6,10 @@ describe('Tab', () => {
   describe('getCellByRef', () => {
     it('should work for valid values', () => {
       const tab = tabFactory(100, 100);
-      assert.ok(is(tab.getCellByRef('A1'), new Cell({ formula: '0 * 0' })));
-      assert.ok(is(tab.getCellByRef('$D45'), new Cell({ formula: '44 * 3' })));
-      assert.ok(is(tab.getCellByRef('AB$98'), new Cell({ formula: '97 * 27' })));
-      assert.ok(is(tab.getCellByRef('$CV$100'), new Cell({ formula: '99 * 99' })));
+      assert.ok(is(tab.getCellByA1Ref('A1'), new Cell({ formula: '0 * 0' })));
+      assert.ok(is(tab.getCellByA1Ref('$D45'), new Cell({ formula: '44 * 3' })));
+      assert.ok(is(tab.getCellByA1Ref('AB$98'), new Cell({ formula: '97 * 27' })));
+      assert.ok(is(tab.getCellByA1Ref('$CV$100'), new Cell({ formula: '99 * 99' })));
     });
   });
 });
