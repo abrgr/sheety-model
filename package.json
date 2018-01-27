@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "npm run build && mocha --recursive --require babel-core/register test",
-    "build": "babel src --out-dir dist --source-maps"
+    "build": "babel src --out-dir dist --source-maps",
+    "prepublish": "rm -rf dist && npm run build"
   },
   "author": "Adam Berger",
   "license": "UNLICENSED",
