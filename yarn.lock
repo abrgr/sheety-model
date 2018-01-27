@@ -578,6 +578,12 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
+bessel@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/bessel/-/bessel-0.2.0.tgz#13cb39cd29233219ec2da725e0ba0c66fb46b6f2"
+  dependencies:
+    voc ""
+
 binary-extensions@^1.0.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
@@ -829,6 +835,14 @@ form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
+"formulajs@github:handsontable/formula.js":
+  version "1.2.2"
+  resolved "https://codeload.github.com/handsontable/formula.js/tar.gz/01d98a9c22e1931e73e46f71142c08917131b83f"
+  dependencies:
+    bessel "^0.2.0"
+    jStat "^1.7.0"
+    numbro "^1.11.0"
+
 fs-readdir-recursive@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fs-readdir-recursive/-/fs-readdir-recursive-1.1.0.tgz#e32fc030a2ccee44a6b5371308da54be0b397d27"
@@ -965,6 +979,13 @@ home-or-tmp@^2.0.0:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.1"
 
+"hot-formula-parser@https://github.com/abrgr/formula-parser.git#68eae50d58306de2c9d92b75533d704b3e23519a":
+  version "2.3.1"
+  resolved "https://github.com/abrgr/formula-parser.git#68eae50d58306de2c9d92b75533d704b3e23519a"
+  dependencies:
+    formulajs "github:handsontable/formula.js"
+    tiny-emitter "^2.0.1"
+
 http-signature@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/http-signature/-/http-signature-1.1.1.tgz#df72e267066cd0ac67fb76adf8e134a8fbcf91bf"
@@ -1081,6 +1102,10 @@ isobject@^2.0.0:
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
+
+jStat@^1.7.0:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/jStat/-/jStat-1.7.1.tgz#e636dd87d72b305c060dfcc901de1732d15130c1"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -1263,6 +1288,10 @@ npmlog@^4.0.2:
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
+
+numbro@^1.11.0:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-1.11.1.tgz#e0d9ba0ddfc3ad5ac01d9558a49383db214f04be"
 
 oauth-sign@~0.8.1:
   version "0.8.2"
@@ -1590,6 +1619,10 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
+tiny-emitter@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.0.2.tgz#82d27468aca5ade8e5fd1e6d22b57dd43ebdfb7c"
+
 to-fast-properties@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
@@ -1643,6 +1676,10 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+voc@:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/voc/-/voc-1.0.0.tgz#5465c0ce11d0881f7d8e36d8ca587043f33a25ae"
 
 wide-align@^1.1.0:
   version "1.1.2"

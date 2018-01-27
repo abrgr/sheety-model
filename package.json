@@ -14,6 +14,7 @@
     "README.md"
   ],
   "dependencies": {
+    "hot-formula-parser": "https://github.com/abrgr/formula-parser.git#68eae50d58306de2c9d92b75533d704b3e23519a",
     "immutable": "^3.8.2"
   },
   "devDependencies": {
