@@ -3,7 +3,6 @@ import CellStyle from './cell-style'
 import RemoteRef from './remote-ref';
 
 const CellRecord = Record({
-  ref: null,
   staticValue: null,
   formula: null,
   isUserEditable: false,
