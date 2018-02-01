@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _immutable = require('immutable');
@@ -28,23 +30,31 @@ var SheetRecord = (0, _immutable.Record)({
   tabsById: new _immutable.Map()
 }, 'Sheet');
 
+function coerceTabsById(tabsById) {
+  return new _immutable.Map(tabsById).map(function (tab) {
+    return new _tab2.default(tab);
+  });
+}
+
 var Sheet = function (_SheetRecord) {
   _inherits(Sheet, _SheetRecord);
 
-  function Sheet(_ref) {
-    var tabs = _ref.tabs,
-        tabsById = _ref.tabsById;
-
+  function Sheet(params) {
     _classCallCheck(this, Sheet);
 
+    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('tabs'), params.get('tabsById')] : [params.tabs, params.tabsById],
+        _ref2 = _slicedToArray(_ref, 2),
+        tabs = _ref2[0],
+        tabsById = _ref2[1];
+
     return _possibleConstructorReturn(this, (Sheet.__proto__ || Object.getPrototypeOf(Sheet)).call(this, !tabsById && !!tabs ? {
-      tabsById: new _immutable.List(tabs).groupBy(function (t) {
+      tabsById: coerceTabsById(new _immutable.List(tabs).groupBy(function (t) {
         return t.get('id');
       }).map(function (t) {
         return t.first();
-      })
+      }))
     } : {
-      tabsById: tabsById
+      tabsById: coerceTabsById(tabsById)
     }));
   }
 
@@ -79,6 +89,25 @@ var Sheet = function (_SheetRecord) {
     key: 'getTab',
     value: function getTab(tabId) {
       return this.getIn(['tabsById', tabId]);
+    }
+  }, {
+    key: 'mapRange',
+    value: function mapRange(cellRefRange, xform) {
+      var start = cellRefRange.get('start');
+      var end = cellRefRange.get('end');
+      var tab = start.get('tabId');
+      var rows = end.get('rowIdx') - start.get('rowIdx');
+      var cols = end.get('colIdx') - start.get('colIdx');
+
+      var vals = [];
+      for (var r = 0; r <= rows; ++r) {
+        vals.push([]);
+        for (var c = 0; c <= cols; ++c) {
+          vals[r][c] = xform(start.merge({ rowIdx: r, colIdx: c }));
+        }
+      }
+
+      return vals;
     }
   }]);
 

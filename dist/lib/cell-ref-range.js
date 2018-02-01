@@ -10,7 +10,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _immutable = require('immutable');
 
-var _hotFormulaParser = require('hot-formula-parser');
+var _cellRef = require('./cell-ref');
+
+var _cellRef2 = _interopRequireDefault(_cellRef);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18,84 +22,40 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CellRefRecord = (0, _immutable.Record)({
-  tabId: null,
-  rowIdx: null,
-  colIdx: null
+var CellRefRangeRecord = (0, _immutable.Record)({
+  start: null,
+  end: null
 });
 
-var CellRef = function (_CellRefRecord) {
-  _inherits(CellRef, _CellRefRecord);
+var CellRefRange = function (_CellRefRangeRecord) {
+  _inherits(CellRefRange, _CellRefRangeRecord);
 
-  function CellRef(params) {
-    _classCallCheck(this, CellRef);
+  function CellRefRange(params) {
+    _classCallCheck(this, CellRefRange);
 
-    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('tabId'), params.get('rowIdx'), params.get('colIdx')] : [params.tabId, params.rowIdx, params.colIdx],
-        _ref2 = _slicedToArray(_ref, 3),
-        tabId = _ref2[0],
-        rowIdx = _ref2[1],
-        colIdx = _ref2[2];
+    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('start'), params.get('end')] : [params.start, params.end],
+        _ref2 = _slicedToArray(_ref, 2),
+        start = _ref2[0],
+        end = _ref2[1];
 
-    return _possibleConstructorReturn(this, (CellRef.__proto__ || Object.getPrototypeOf(CellRef)).call(this, {
-      tabId: !!tabId ? '' + tabId : null,
-      rowIdx: 0 | rowIdx,
-      colIdx: 0 | colIdx
+    return _possibleConstructorReturn(this, (CellRefRange.__proto__ || Object.getPrototypeOf(CellRefRange)).call(this, {
+      start: new _cellRef2.default(start),
+      end: new _cellRef2.default(end)
     }));
   }
 
-  _createClass(CellRef, [{
-    key: 'toA1Ref',
-    value: function toA1Ref() {
-      return (0, _hotFormulaParser.toLabel)({ index: this.get('rowIdx') }, { index: this.get('colIdx') }, this.get('tabId'));
-    }
-  }], [{
-    key: 'fromTabAndA1Ref',
-    value: function fromTabAndA1Ref(tab, ref) {
-      var _extractLabel = (0, _hotFormulaParser.extractLabel)(ref),
-          _extractLabel2 = _slicedToArray(_extractLabel, 2),
-          row = _extractLabel2[0],
-          col = _extractLabel2[1];
-
-      var rowIdx = row.index;
-      var colIdx = col.index;
-
-      return new CellRef({
-        rowIdx: rowIdx,
-        colIdx: colIdx,
-        tabId: tab.get('id')
-      });
-    }
-  }, {
-    key: 'fromA1Ref',
-    value: function fromA1Ref(ref) {
-      var _extractLabel3 = (0, _hotFormulaParser.extractLabel)(ref),
-          _extractLabel4 = _slicedToArray(_extractLabel3, 3),
-          row = _extractLabel4[0],
-          col = _extractLabel4[1],
-          tabId = _extractLabel4[2];
-
-      var rowIdx = row.index;
-      var colIdx = col.index;
-
-      return new CellRef({
-        rowIdx: rowIdx,
-        colIdx: colIdx,
-        tabId: tabId
-      });
-    }
-  }, {
+  _createClass(CellRefRange, null, [{
     key: 'of',
-    value: function of(tab, rowIdx, colIdx) {
-      return new CellRef({
-        tabId: tab.get('id'),
-        rowIdx: rowIdx,
-        colIdx: colIdx
+    value: function of(tab, startRow, startCol, endRow, endCol) {
+      return new _cellRef2.default({
+        start: _cellRef2.default.of(tab, startRow, startCol),
+        end: _cellRef2.default.of(tab, endRow, endCol)
       });
     }
   }]);
 
-  return CellRef;
-}(CellRefRecord);
+  return CellRefRange;
+}(CellRefRangeRecord);
 
-exports.default = CellRef;
-//# sourceMappingURL=cell-ref.js.map
+exports.default = CellRefRange;
+//# sourceMappingURL=cell-ref-range.js.map

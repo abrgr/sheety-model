@@ -1,4 +1,4 @@
-import { Record } from 'immutable';
+import { Record, Iterable } from 'immutable';
 import { extractLabel, toLabel } from 'hot-formula-parser';
 
 const CellRefRecord = Record({
@@ -8,6 +8,17 @@ const CellRefRecord = Record({
 });
 
 export default class CellRef extends CellRefRecord {
+  constructor(params) {
+    const [tabId, rowIdx, colIdx] = Iterable.isIterable(params)
+                                  ? [params.get('tabId'), params.get('rowIdx'), params.get('colIdx')]
+                                  : [params.tabId, params.rowIdx, params.colIdx];
+    super({
+      tabId: !!tabId ? ('' + tabId) : null, 
+      rowIdx: 0|rowIdx,
+      colIdx: 0|colIdx
+    });
+  }
+
   static fromTabAndA1Ref(tab, ref) {
     const [row, col] = extractLabel(ref);
     const rowIdx = row.index;

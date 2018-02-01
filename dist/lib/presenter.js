@@ -8,51 +8,46 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _immutable = require('immutable');
 
-var _remoteRef = require('./remote-ref');
-
-var _remoteRef2 = _interopRequireDefault(_remoteRef);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CellRecord = (0, _immutable.Record)({
-  staticValue: null,
-  formula: null,
-  isUserEditable: false,
-  remoteValue: new _remoteRef2.default(),
-  link: null
-}, 'Cell');
+var PresenterRecord = (0, _immutable.Record)({
+  // string id of the presenter
+  id: null,
+  // Map from string keys to formulas intended to be evaluated against spreadsheet data
+  mapDataQuery: new _immutable.Map(),
+  // Array data query
+  arrayDataQuery: new _immutable.List(),
+  // Arbitrary key/value pairs provided to the presenter
+  config: new _immutable.Map()
+}, 'Presenter');
 
-var Cell = function (_CellRecord) {
-  _inherits(Cell, _CellRecord);
+var Presenter = function (_PresenterRecord) {
+  _inherits(Presenter, _PresenterRecord);
 
-  function Cell(params) {
-    _classCallCheck(this, Cell);
+  function Presenter(params) {
+    _classCallCheck(this, Presenter);
 
-    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('staticValue'), params.get('formula'), params.get('isUserEditable'), params.get('remoteValue'), params.get('link')] : [params.staticValue, params.formula, params.isUserEditable, params.remoteValue, params.link],
-        _ref2 = _slicedToArray(_ref, 5),
-        staticValue = _ref2[0],
-        formula = _ref2[1],
-        isUserEditable = _ref2[2],
-        remoteValue = _ref2[3],
-        link = _ref2[4];
+    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('id'), params.get('mapDataQuery'), params.get('arrayDataQuery'), params.get('config')] : [params.id, params.mapDataQuery, params.arrayDataQuery, params.config],
+        _ref2 = _slicedToArray(_ref, 4),
+        id = _ref2[0],
+        mapDataQuery = _ref2[1],
+        arrayDataQuery = _ref2[2],
+        config = _ref2[3];
 
-    return _possibleConstructorReturn(this, (Cell.__proto__ || Object.getPrototypeOf(Cell)).call(this, {
-      staticValue: staticValue,
-      formula: !!formula ? '' + formula : null,
-      isUserEditable: !!isUserEditable,
-      remoteValue: !!remoteValue ? new _remoteRef2.default(remoteValue) : null,
-      link: !!link ? '' + link : null
+    return _possibleConstructorReturn(this, (Presenter.__proto__ || Object.getPrototypeOf(Presenter)).call(this, {
+      id: !!id ? '' + id : null,
+      mapDataQuery: !!mapDataQuery ? new _immutable.Map(mapDataQuery) : null,
+      arrayDataQuery: !!arrayDataQuery ? new _immutable.List(arrayDataQuery) : null,
+      config: !!config ? new _immutable.Map(config) : null
     }));
   }
 
-  return Cell;
-}(CellRecord);
+  return Presenter;
+}(PresenterRecord);
 
-exports.default = Cell;
-//# sourceMappingURL=cell.js.map
+exports.default = Presenter;
+//# sourceMappingURL=presenter.js.map
