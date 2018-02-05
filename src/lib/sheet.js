@@ -1,27 +1,30 @@
 import { Record, Map, List, Iterable } from 'immutable';
 import Tab from './tab';
 import CellRef from './cell-ref';
+import coerce from './coerce';
 
 const SheetRecord = Record({
   tabsById: new Map()
 }, 'Sheet');
 
-function coerceTabsById(tabsById) {
-  return new Map(tabsById).map(tab => new Tab(tab));
-}
+const coercer = coerce.bind(null, new Map({
+  tabsById: tabsById => new Map(tabsById).map(tab => new Tab(tab))
+}));
 
 export default class Sheet extends SheetRecord {
   constructor(params) {
-    const [tabs, tabsById] = Iterable.isIterable(params)
-                           ? [params.get('tabs'), params.get('tabsById')]
-                           : [params.tabs, params.tabsById];
+    const tabs = params && Iterable.isIterable(params)
+               ? params.get('tabs')
+               : params.tabs;
+
     super(
-      ( !tabsById && !!tabs )
-      ? {
-        tabsById: coerceTabsById(new List(tabs).groupBy(t => t.get('id')).map(t => t.first()))
-      } : {
-        tabsById: coerceTabsById(tabsById)
-      }
+      coercer(
+        tabs
+          ? {
+            tabsById: new List(tabs).groupBy(t => t.get('id'))
+                                    .map(t => t.first())
+          } : params
+      )
     );
   }
 

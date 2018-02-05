@@ -1,20 +1,20 @@
-import { Record, Iterable } from 'immutable';
+import { Map, Record } from 'immutable';
 import CellRef from './cell-ref';
+import coerce from './coerce';
 
 const CellRefRangeRecord = Record({
   start: null,
   end: null
 });
 
+const coercer = coerce.bind(null, new Map({
+  start: (start) => new CellRef(start),
+  end: (end) => new CellRef(end)
+}));
+
 export default class CellRefRange extends CellRefRangeRecord {
   constructor(params) {
-    const [start, end] = Iterable.isIterable(params)
-                       ? [params.get('start'), params.get('end')]
-                       : [params.start, params.end];
-    super({
-      start: new CellRef(start),
-      end: new CellRef(end)
-    });
+    super(coercer(params));
   }
 
   static of(tab, startRow, startCol, endRow, endCol) {

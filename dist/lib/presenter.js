@@ -4,9 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _immutable = require('immutable');
+
+var _coerce = require('./coerce');
+
+var _coerce2 = _interopRequireDefault(_coerce);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25,25 +29,28 @@ var PresenterRecord = (0, _immutable.Record)({
   config: new _immutable.Map()
 }, 'Presenter');
 
+var coercer = _coerce2.default.bind(null, new _immutable.Map({
+  id: function id(_id) {
+    return !!_id ? '' + _id : null;
+  },
+  mapDataQuery: function mapDataQuery(_mapDataQuery) {
+    return !!_mapDataQuery ? new _immutable.Map(_mapDataQuery) : null;
+  },
+  arrayDataQuery: function arrayDataQuery(_arrayDataQuery) {
+    return !!_arrayDataQuery ? new _immutable.List(_arrayDataQuery) : null;
+  },
+  config: function config(_config) {
+    return !!_config ? new _immutable.Map(_config) : null;
+  }
+}));
+
 var Presenter = function (_PresenterRecord) {
   _inherits(Presenter, _PresenterRecord);
 
   function Presenter(params) {
     _classCallCheck(this, Presenter);
 
-    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('id'), params.get('mapDataQuery'), params.get('arrayDataQuery'), params.get('config')] : [params.id, params.mapDataQuery, params.arrayDataQuery, params.config],
-        _ref2 = _slicedToArray(_ref, 4),
-        id = _ref2[0],
-        mapDataQuery = _ref2[1],
-        arrayDataQuery = _ref2[2],
-        config = _ref2[3];
-
-    return _possibleConstructorReturn(this, (Presenter.__proto__ || Object.getPrototypeOf(Presenter)).call(this, {
-      id: !!id ? '' + id : null,
-      mapDataQuery: !!mapDataQuery ? new _immutable.Map(mapDataQuery) : null,
-      arrayDataQuery: !!arrayDataQuery ? new _immutable.List(arrayDataQuery) : null,
-      config: !!config ? new _immutable.Map(config) : null
-    }));
+    return _possibleConstructorReturn(this, (Presenter.__proto__ || Object.getPrototypeOf(Presenter)).call(this, coercer(params)));
   }
 
   return Presenter;

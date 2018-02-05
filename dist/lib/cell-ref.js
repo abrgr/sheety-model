@@ -12,6 +12,12 @@ var _immutable = require('immutable');
 
 var _hotFormulaParser = require('hot-formula-parser');
 
+var _coerce = require('./coerce');
+
+var _coerce2 = _interopRequireDefault(_coerce);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -24,29 +30,38 @@ var CellRefRecord = (0, _immutable.Record)({
   colIdx: null
 });
 
+var coercer = _coerce2.default.bind(null, new _immutable.Map({
+  tabId: function tabId(_tabId) {
+    return _tabId ? '' + _tabId : null;
+  },
+  rowIdx: function rowIdx(_rowIdx) {
+    return 0 | _rowIdx;
+  },
+  colIdx: function colIdx(_colIdx) {
+    return 0 | _colIdx;
+  }
+}));
+
 var CellRef = function (_CellRefRecord) {
   _inherits(CellRef, _CellRefRecord);
 
   function CellRef(params) {
     _classCallCheck(this, CellRef);
 
-    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('tabId'), params.get('rowIdx'), params.get('colIdx')] : [params.tabId, params.rowIdx, params.colIdx],
-        _ref2 = _slicedToArray(_ref, 3),
-        tabId = _ref2[0],
-        rowIdx = _ref2[1],
-        colIdx = _ref2[2];
-
-    return _possibleConstructorReturn(this, (CellRef.__proto__ || Object.getPrototypeOf(CellRef)).call(this, {
-      tabId: !!tabId ? '' + tabId : null,
-      rowIdx: 0 | rowIdx,
-      colIdx: 0 | colIdx
-    }));
+    return _possibleConstructorReturn(this, (CellRef.__proto__ || Object.getPrototypeOf(CellRef)).call(this, coercer(params)));
   }
 
   _createClass(CellRef, [{
     key: 'toA1Ref',
     value: function toA1Ref() {
       return (0, _hotFormulaParser.toLabel)({ index: this.get('rowIdx') }, { index: this.get('colIdx') }, this.get('tabId'));
+    }
+  }, {
+    key: 'whenValid',
+    value: function whenValid(fn) {
+      if (this.get('tabId')) {
+        return fn(this.get('tabId'), this.get('colIdx'), this.get('rowIdx'));
+      }
     }
   }], [{
     key: 'fromTabAndA1Ref',

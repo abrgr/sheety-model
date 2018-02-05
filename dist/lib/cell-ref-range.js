@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _immutable = require('immutable');
@@ -13,6 +11,10 @@ var _immutable = require('immutable');
 var _cellRef = require('./cell-ref');
 
 var _cellRef2 = _interopRequireDefault(_cellRef);
+
+var _coerce = require('./coerce');
+
+var _coerce2 = _interopRequireDefault(_coerce);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27,21 +29,22 @@ var CellRefRangeRecord = (0, _immutable.Record)({
   end: null
 });
 
+var coercer = _coerce2.default.bind(null, new _immutable.Map({
+  start: function start(_start) {
+    return new _cellRef2.default(_start);
+  },
+  end: function end(_end) {
+    return new _cellRef2.default(_end);
+  }
+}));
+
 var CellRefRange = function (_CellRefRangeRecord) {
   _inherits(CellRefRange, _CellRefRangeRecord);
 
   function CellRefRange(params) {
     _classCallCheck(this, CellRefRange);
 
-    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('start'), params.get('end')] : [params.start, params.end],
-        _ref2 = _slicedToArray(_ref, 2),
-        start = _ref2[0],
-        end = _ref2[1];
-
-    return _possibleConstructorReturn(this, (CellRefRange.__proto__ || Object.getPrototypeOf(CellRefRange)).call(this, {
-      start: new _cellRef2.default(start),
-      end: new _cellRef2.default(end)
-    }));
+    return _possibleConstructorReturn(this, (CellRefRange.__proto__ || Object.getPrototypeOf(CellRefRange)).call(this, coercer(params)));
   }
 
   _createClass(CellRefRange, null, [{

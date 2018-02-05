@@ -4,13 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _immutable = require('immutable');
 
 var _remoteRef = require('./remote-ref');
 
 var _remoteRef2 = _interopRequireDefault(_remoteRef);
+
+var _coerce = require('./coerce');
+
+var _coerce2 = _interopRequireDefault(_coerce);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28,27 +30,31 @@ var CellRecord = (0, _immutable.Record)({
   link: null
 }, 'Cell');
 
+var coercer = _coerce2.default.bind(null, new _immutable.Map({
+  staticValue: function staticValue(_staticValue) {
+    return _staticValue;
+  },
+  formula: function formula(_formula) {
+    return !!_formula ? '' + _formula : null;
+  },
+  isUserEditable: function isUserEditable(_isUserEditable) {
+    return !!_isUserEditable;
+  },
+  remoteValue: function remoteValue(_remoteValue) {
+    return !!_remoteValue ? new _remoteRef2.default(_remoteValue) : null;
+  },
+  link: function link(_link) {
+    return !!_link ? '' + _link : null;
+  }
+}));
+
 var Cell = function (_CellRecord) {
   _inherits(Cell, _CellRecord);
 
   function Cell(params) {
     _classCallCheck(this, Cell);
 
-    var _ref = _immutable.Iterable.isIterable(params) ? [params.get('staticValue'), params.get('formula'), params.get('isUserEditable'), params.get('remoteValue'), params.get('link')] : [params.staticValue, params.formula, params.isUserEditable, params.remoteValue, params.link],
-        _ref2 = _slicedToArray(_ref, 5),
-        staticValue = _ref2[0],
-        formula = _ref2[1],
-        isUserEditable = _ref2[2],
-        remoteValue = _ref2[3],
-        link = _ref2[4];
-
-    return _possibleConstructorReturn(this, (Cell.__proto__ || Object.getPrototypeOf(Cell)).call(this, {
-      staticValue: staticValue,
-      formula: !!formula ? '' + formula : null,
-      isUserEditable: !!isUserEditable,
-      remoteValue: !!remoteValue ? new _remoteRef2.default(remoteValue) : null,
-      link: !!link ? '' + link : null
-    }));
+    return _possibleConstructorReturn(this, (Cell.__proto__ || Object.getPrototypeOf(Cell)).call(this, coercer(params)));
   }
 
   return Cell;

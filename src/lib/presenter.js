@@ -1,4 +1,5 @@
-import { Record, Map, List, Iterable } from 'immutable';
+import { Record, Map, List } from 'immutable';
+import coerce from './coerce';
 
 const PresenterRecord = Record({
   // string id of the presenter
@@ -11,17 +12,15 @@ const PresenterRecord = Record({
   config: new Map()
 }, 'Presenter');
 
+const coercer = coerce.bind(null, new Map({
+  id: (id) => !!id ? ('' + id) : null,
+  mapDataQuery: mapDataQuery => !!mapDataQuery ? new Map(mapDataQuery) : null,
+  arrayDataQuery: arrayDataQuery => !!arrayDataQuery ? new List(arrayDataQuery) : null,
+  config: config => !!config ? new Map(config) : null
+}));
+
 export default class Presenter extends PresenterRecord {
   constructor(params) {
-    const [id, mapDataQuery, arrayDataQuery, config]
-      = Iterable.isIterable(params)
-      ? [params.get('id'), params.get('mapDataQuery'), params.get('arrayDataQuery'), params.get('config')]
-      : [params.id, params.mapDataQuery, params.arrayDataQuery, params.config];
-    super({
-      id: !!id ? ('' + id) : null,
-      mapDataQuery: !!mapDataQuery ? new Map(mapDataQuery) : null,
-      arrayDataQuery: !!arrayDataQuery ? new List(arrayDataQuery) : null,
-      config: !!config ? new Map(config) : null
-    });
+    super(coercer(params));
   }
 }

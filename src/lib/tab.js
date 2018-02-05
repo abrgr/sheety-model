@@ -1,6 +1,7 @@
-import { Record, List, Iterable } from 'immutable';
+import { Map, Record, List } from 'immutable';
 import CellRef from './cell-ref';
 import Cell from './cell';
+import coerce from './coerce';
 
 const TabRecord = Record({
   id: null,
@@ -9,20 +10,16 @@ const TabRecord = Record({
   rows: new List()
 }, 'Tab');
 
+const coercer = coerce.bind(null, new Map({
+  id: id => '' + id,
+  name: name => '' + name,
+  isVisible: isVisible => !!isVisible,
+  rows: rows => !!rows ? coerceRows(rows) : new List()
+}));
+
 export default class Tab extends TabRecord {
   constructor(params) {
-    const [id, name, isVisible, rows]
-      = Iterable.isIterable(params)
-      ? [params.get('id'), params.get('name'), params.get('isVisible'), params.get('rows')]
-      : [params.id, params.name, params.isVisible, params.rows];
-    super({
-      id: '' + id,
-      name: '' + name,
-      isVisible: !!isVisible,
-      rows: !!rows
-          ? coerceRows(rows)
-          : new List()
-    });
+    super(coercer(params));
   }
 
   getCellByA1Ref(ref) {

@@ -1,5 +1,6 @@
-import { Record, Iterable } from 'immutable';
+import { Map, Record } from 'immutable';
 import { extractLabel, toLabel } from 'hot-formula-parser';
+import coerce from './coerce';
 
 const CellRefRecord = Record({
   tabId: null,
@@ -7,16 +8,15 @@ const CellRefRecord = Record({
   colIdx: null
 });
 
+const coercer = coerce.bind(null, new Map({
+  tabId: (tabId) => tabId ? ('' + tabId) : null,
+  rowIdx: (rowIdx) => 0|rowIdx,
+  colIdx: (colIdx) => 0|colIdx
+}));
+
 export default class CellRef extends CellRefRecord {
   constructor(params) {
-    const [tabId, rowIdx, colIdx] = Iterable.isIterable(params)
-                                  ? [params.get('tabId'), params.get('rowIdx'), params.get('colIdx')]
-                                  : [params.tabId, params.rowIdx, params.colIdx];
-    super({
-      tabId: !!tabId ? ('' + tabId) : null, 
-      rowIdx: 0|rowIdx,
-      colIdx: 0|colIdx
-    });
+    super(coercer(params));
   }
 
   static fromTabAndA1Ref(tab, ref) {
@@ -57,5 +57,11 @@ export default class CellRef extends CellRefRecord {
       { index: this.get('colIdx') },
       this.get('tabId')
     );
+  }
+
+  whenValid(fn) {
+    if ( this.get('tabId') ) {
+      return fn(this.get('tabId'), this.get('colIdx'), this.get('rowIdx'));
+    }
   }
 }
