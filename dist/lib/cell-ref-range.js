@@ -47,7 +47,7 @@ var CellRefRange = function (_CellRefRangeRecord) {
   _createClass(CellRefRange, null, [{
     key: 'of',
     value: function of(tab, startRow, startCol, endRow, endCol) {
-      return new _cellRef2.default({
+      return new CellRefRange({
         start: _cellRef2.default.of(tab, startRow, startCol),
         end: _cellRef2.default.of(tab, endRow, endCol)
       });

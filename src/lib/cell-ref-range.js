@@ -18,7 +18,7 @@ export default class CellRefRange extends CellRefRangeRecord {
   }
 
   static of(tab, startRow, startCol, endRow, endCol) {
-    return new CellRef({
+    return new CellRefRange({
       start: CellRef.of(tab, startRow, startCol),
       end: CellRef.of(tab, endRow, endCol)
     });
