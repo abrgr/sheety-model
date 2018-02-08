@@ -55,6 +55,23 @@ var CellRefRange = function (_CellRefRangeRecord) {
         end: _cellRef2.default.of(tab, endRow, endCol)
       });
     }
+  }, {
+    key: 'fromA1Ref',
+    value: function fromA1Ref(ref) {
+      // the structure of a ref is <tab><from ref>:<to ref>
+      // <tab> may include a colon so the final colon must be the separator
+      var lastColonIdx = ref.lastIndexOf(':');
+      var from = ref.slice(0, lastColonIdx);
+      var to = ref.slice(lastColonIdx + 1);
+
+      var start = _cellRef2.default.fromA1Ref(from);
+      var end = _cellRef2.default.fromA1Ref(to).set('tabId', start.get('tabId'));
+
+      return new CellRefRange({
+        start: start,
+        end: end
+      });
+    }
   }]);
 
   return CellRefRange;

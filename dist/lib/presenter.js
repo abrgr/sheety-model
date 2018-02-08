@@ -24,7 +24,7 @@ var PresenterRecord = (0, _immutable.Record)({
   // Map from string keys to formulas intended to be evaluated against spreadsheet data
   mapDataQuery: new _immutable.Map(),
   // Array data query
-  arrayDataQuery: new _immutable.List(),
+  arrayDataQuery: null,
   // Arbitrary key/value pairs provided to the presenter
   config: new _immutable.Map()
 }, 'Presenter');
@@ -37,7 +37,7 @@ var coercer = _coerce2.default.bind(null, new _immutable.Map({
     return !!_mapDataQuery ? new _immutable.Map(_mapDataQuery) : null;
   },
   arrayDataQuery: function arrayDataQuery(_arrayDataQuery) {
-    return !!_arrayDataQuery ? new _immutable.List(_arrayDataQuery) : null;
+    return !!_arrayDataQuery ? '' + _arrayDataQuery : null;
   },
   config: function config(_config) {
     return !!_config ? new _immutable.Map(_config) : null;

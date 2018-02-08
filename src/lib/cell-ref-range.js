@@ -23,4 +23,20 @@ export default class CellRefRange extends CellRefRangeRecord {
       end: CellRef.of(tab, endRow, endCol)
     });
   }
+
+  static fromA1Ref(ref) {
+    // the structure of a ref is <tab><from ref>:<to ref>
+    // <tab> may include a colon so the final colon must be the separator
+    const lastColonIdx = ref.lastIndexOf(':');
+    const from = ref.slice(0, lastColonIdx);
+    const to = ref.slice(lastColonIdx + 1);
+
+    const start = CellRef.fromA1Ref(from);
+    const end = CellRef.fromA1Ref(to).set('tabId', start.get('tabId'));
+
+    return new CellRefRange({
+      start,
+      end
+    });
+  }
 }
