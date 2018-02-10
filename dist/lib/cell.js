@@ -10,6 +10,10 @@ var _remoteRef = require('./remote-ref');
 
 var _remoteRef2 = _interopRequireDefault(_remoteRef);
 
+var _cellFormat = require('./cell-format');
+
+var _cellFormat2 = _interopRequireDefault(_cellFormat);
+
 var _coerce = require('./coerce');
 
 var _coerce2 = _interopRequireDefault(_coerce);
@@ -26,8 +30,9 @@ var CellRecord = (0, _immutable.Record)({
   staticValue: null,
   formula: null,
   isUserEditable: false,
-  remoteValue: new _remoteRef2.default(),
-  link: null
+  remoteValue: null,
+  link: null,
+  format: new _cellFormat2.default()
 }, 'Cell');
 
 var coercer = _coerce2.default.bind(null, new _immutable.Map({
@@ -45,6 +50,9 @@ var coercer = _coerce2.default.bind(null, new _immutable.Map({
   },
   link: function link(_link) {
     return !!_link ? '' + _link : null;
+  },
+  format: function format(_format) {
+    return new _cellFormat2.default(_format);
   }
 }));
 
