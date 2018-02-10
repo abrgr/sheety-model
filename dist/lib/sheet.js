@@ -92,21 +92,7 @@ var Sheet = function (_SheetRecord) {
   }, {
     key: 'mapRange',
     value: function mapRange(cellRefRange, xform) {
-      var start = cellRefRange.get('start');
-      var end = cellRefRange.get('end');
-      var tab = start.get('tabId');
-      var rows = end.get('rowIdx') - start.get('rowIdx');
-      var cols = end.get('colIdx') - start.get('colIdx');
-
-      var vals = [];
-      for (var r = 0; r <= rows; ++r) {
-        vals.push([]);
-        for (var c = 0; c <= cols; ++c) {
-          vals[r][c] = xform(start.merge({ rowIdx: r, colIdx: c }));
-        }
-      }
-
-      return vals;
+      return cellRefRange.map(xform);
     }
   }]);
 

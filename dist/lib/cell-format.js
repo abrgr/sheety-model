@@ -39,21 +39,33 @@ var types = Object.freeze({
   SCIENTIFIC: 'SCIENTIFIC'
 });
 
+function isNumericType(type) {
+  return type !== types.TEXT;
+}
+
+var probablyToNum = function probablyToNum(val) {
+  if (typeof val === 'number') {
+    return val;
+  }
+
+  if (/^(-+)?\d*[.]?\d*$/.exec('' + val)) {
+    return +val;
+  }
+
+  // probably mis-categorized as a number
+  return val;
+};
+var toStr = function toStr(val) {
+  return !!val ? '' + val : '';
+};
+
 var _toJSValue = Object.freeze({
-  TEXT: function TEXT(val) {
-    return '' + val;
-  },
-  NUMBER: function NUMBER(val) {
-    return +val;
-  },
-  PERCENT: function PERCENT(val) {
-    return +val;
-  },
-  CURRENCY: function CURRENCY(val) {
-    return +val;
-  },
+  TEXT: toStr,
+  NUMBER: probablyToNum,
+  PERCENT: probablyToNum,
+  CURRENCY: probablyToNum,
   DATE: function DATE(val) {
-    return (0, _moment2.default)(_ssf2.default.format('yyyy-mm-dd hh:mm:ss', val), 'YYYY-MM-DD HH:mm:ss');
+    return (0, _moment2.default)(_ssf2.default.format('yyyy-mm-dd', val), 'YYYY-MM-DD');
   },
   TIME: function TIME(val) {
     return (0, _moment2.default)(_ssf2.default.format('yyyy-mm-dd hh:mm:ss', val), 'YYYY-MM-DD HH:mm:ss');
@@ -61,27 +73,18 @@ var _toJSValue = Object.freeze({
   DATE_TIME: function DATE_TIME(val) {
     return (0, _moment2.default)(_ssf2.default.format('yyyy-mm-dd hh:mm:ss', val), 'YYYY-MM-DD HH:mm:ss');
   },
-  SCIENTIFIC: function SCIENTIFIC(val) {
-    return +val;
-  }
+  SCIENTIFIC: probablyToNum
 });
-
-var toNum = function toNum(val) {
-  return +val;
-};
-var toStr = function toStr(val) {
-  return '' + val;
-};
 
 var toFormatableValue = Object.freeze({
   TEXT: toStr,
-  NUMBER: toNum,
-  PERCENT: toNum,
-  CURRENCY: toNum,
-  DATE: toNum,
-  TIME: toNum,
-  DATE_TIME: toNum,
-  SCIENTIFIC: toNum
+  NUMBER: probablyToNum,
+  PERCENT: probablyToNum,
+  CURRENCY: probablyToNum,
+  DATE: probablyToNum,
+  TIME: probablyToNum,
+  DATE_TIME: probablyToNum,
+  SCIENTIFIC: probablyToNum
 });
 
 var userEnteredValueToSheetValue = Object.freeze({
@@ -142,7 +145,11 @@ var CellFormat = function (_CellFormatRecord) {
     key: 'format',
     value: function format(val) {
       var valueOf = toFormatableValue[this.get('type')];
-      return valueOf ? _ssf2.default.format(this.get('pattern'), valueOf(val)) : val;
+      var value = !!valueOf ? valueOf(val) : val;
+
+      var matchingTypes = isNumericType(this.get('type')) ? typeof value === 'number' : typeof value === 'string';
+
+      return matchingTypes ? _ssf2.default.format(this.get('pattern'), value) : val;
     }
   }, {
     key: 'toJSValue',

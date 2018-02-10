@@ -47,7 +47,26 @@ var CellRefRange = function (_CellRefRangeRecord) {
     return _possibleConstructorReturn(this, (CellRefRange.__proto__ || Object.getPrototypeOf(CellRefRange)).call(this, coercer(params)));
   }
 
-  _createClass(CellRefRange, null, [{
+  _createClass(CellRefRange, [{
+    key: 'map',
+    value: function map(xform) {
+      var start = this.get('start');
+      var end = this.get('end');
+      var tab = start.get('tabId');
+      var rows = end.get('rowIdx') - start.get('rowIdx');
+      var cols = end.get('colIdx') - start.get('colIdx');
+
+      var vals = [];
+      for (var r = 0; r <= rows; ++r) {
+        vals.push([]);
+        for (var c = 0; c <= cols; ++c) {
+          vals[r][c] = xform(start.merge({ rowIdx: r, colIdx: c }));
+        }
+      }
+
+      return vals;
+    }
+  }], [{
     key: 'of',
     value: function of(tab, startRow, startCol, endRow, endCol) {
       return new CellRefRange({

@@ -14,29 +14,44 @@ const types = Object.freeze({
   SCIENTIFIC: 'SCIENTIFIC'
 });
 
+function isNumericType(type) {
+  return type !== types.TEXT;
+}
+
+const probablyToNum = (val) => {
+  if ( typeof val === 'number' ) {
+    return val;
+  }
+
+  if ( /^(-+)?\d*[.]?\d*$/.exec('' + val) ) {
+    return +val;
+  }
+
+  // probably mis-categorized as a number
+  return val;
+};
+const toStr = (val) => !!val ? ('' + val) : '';
+
 const toJSValue = Object.freeze({
-  TEXT: (val) => '' + val,
-  NUMBER: (val) => +val,
-  PERCENT: (val) => +val,
-  CURRENCY: (val) => +val,
-  DATE: (val) => moment(ssf.format('yyyy-mm-dd hh:mm:ss', val), 'YYYY-MM-DD HH:mm:ss'),
+  TEXT: toStr,
+  NUMBER: probablyToNum,
+  PERCENT: probablyToNum,
+  CURRENCY: probablyToNum,
+  DATE: (val) => moment(ssf.format('yyyy-mm-dd', val), 'YYYY-MM-DD'),
   TIME: (val) => moment(ssf.format('yyyy-mm-dd hh:mm:ss', val), 'YYYY-MM-DD HH:mm:ss'), // TODO: is this right?
   DATE_TIME: (val) => moment(ssf.format('yyyy-mm-dd hh:mm:ss', val), 'YYYY-MM-DD HH:mm:ss'),
-  SCIENTIFIC: (val) => +val
+  SCIENTIFIC: probablyToNum
 });
-
-const toNum = (val) => +val;
-const toStr = (val) => '' + val;
 
 const toFormatableValue = Object.freeze({
   TEXT: toStr,
-  NUMBER: toNum,
-  PERCENT: toNum,
-  CURRENCY: toNum,
-  DATE: toNum,
-  TIME: toNum,
-  DATE_TIME: toNum,
-  SCIENTIFIC: toNum
+  NUMBER: probablyToNum,
+  PERCENT: probablyToNum,
+  CURRENCY: probablyToNum,
+  DATE: probablyToNum,
+  TIME: probablyToNum,
+  DATE_TIME: probablyToNum,
+  SCIENTIFIC: probablyToNum
 });
 
 const userEnteredValueToSheetValue = Object.freeze({
@@ -73,8 +88,14 @@ export default class CellFormat extends CellFormatRecord {
 
   format(val) {
     const valueOf = toFormatableValue[this.get('type')];
-    return valueOf
-         ? ssf.format(this.get('pattern'), valueOf(val))
+    const value = !!valueOf ? valueOf(val) : val;
+
+    const matchingTypes = isNumericType(this.get('type'))
+                        ? typeof value === 'number'
+                        : typeof value === 'string';
+
+    return matchingTypes
+         ? ssf.format(this.get('pattern'), value)
          : val;
   }
 

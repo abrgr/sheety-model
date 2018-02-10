@@ -52,20 +52,6 @@ export default class Sheet extends SheetRecord {
   }
 
   mapRange(cellRefRange, xform) {
-    const start = cellRefRange.get('start');
-    const end = cellRefRange.get('end');
-    const tab = start.get('tabId');
-    const rows = end.get('rowIdx') - start.get('rowIdx');
-    const cols = end.get('colIdx') - start.get('colIdx');
-
-    const vals = [];
-    for ( let r = 0; r <= rows; ++r ) {
-      vals.push([]);
-      for ( let c = 0; c <= cols; ++c ) {
-        vals[r][c] = xform(start.merge({rowIdx: r, colIdx: c}));
-      }
-    }
-
-    return vals;
+    return cellRefRange.map(xform);
   }
 }
