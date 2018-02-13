@@ -57,7 +57,7 @@ const toFormatableValue = Object.freeze({
 const userEnteredValueToSheetValue = Object.freeze({
   TEXT: (val) => '' + val,
   NUMBER: (val) => +val,
-  PERCENT: (val) => 100 * (+val),
+  PERCENT: (val) => (+val) / 100,
   CURRENCY: (val) => {
     const match = /[0-9]*[.,][0-9]*/.exec('' + val);
     if ( !match ) {

@@ -95,7 +95,7 @@ var userEnteredValueToSheetValue = Object.freeze({
     return +val;
   },
   PERCENT: function PERCENT(val) {
-    return 100 * +val;
+    return +val / 100;
   },
   CURRENCY: function CURRENCY(val) {
     var match = /[0-9]*[.,][0-9]*/.exec('' + val);
