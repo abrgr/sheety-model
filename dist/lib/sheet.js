@@ -92,7 +92,7 @@ var Sheet = function (_SheetRecord) {
   }, {
     key: 'mapRange',
     value: function mapRange(cellRefRange, xform) {
-      return cellRefRange.map(xform);
+      return cellRefRange.mapCellRefs(xform);
     }
   }]);
 

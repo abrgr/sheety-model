@@ -52,6 +52,6 @@ export default class Sheet extends SheetRecord {
   }
 
   mapRange(cellRefRange, xform) {
-    return cellRefRange.map(xform);
+    return cellRefRange.mapCellRefs(xform);
   }
 }

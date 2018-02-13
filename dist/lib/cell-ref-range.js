@@ -48,19 +48,21 @@ var CellRefRange = function (_CellRefRangeRecord) {
   }
 
   _createClass(CellRefRange, [{
-    key: 'map',
-    value: function map(xform) {
+    key: 'mapCellRefs',
+    value: function mapCellRefs(xform) {
       var start = this.get('start');
       var end = this.get('end');
       var tab = start.get('tabId');
-      var rows = end.get('rowIdx') - start.get('rowIdx');
-      var cols = end.get('colIdx') - start.get('colIdx');
+      var startRow = start.get('rowIdx');
+      var endRow = end.get('rowIdx');
+      var startCol = start.get('colIdx');
+      var endCol = end.get('colIdx');
 
       var vals = [];
-      for (var r = 0; r <= rows; ++r) {
+      for (var rowIdx = startRow; rowIdx <= endRow; ++rowIdx) {
         vals.push([]);
-        for (var c = 0; c <= cols; ++c) {
-          vals[r][c] = xform(start.merge({ rowIdx: r, colIdx: c }));
+        for (var colIdx = startCol; colIdx <= endCol; ++colIdx) {
+          vals[rowIdx - startRow][colIdx - startCol] = xform(start.merge({ rowIdx: rowIdx, colIdx: colIdx }));
         }
       }
 

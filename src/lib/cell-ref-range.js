@@ -40,18 +40,20 @@ export default class CellRefRange extends CellRefRangeRecord {
     });
   }
 
-  map(xform) {
+  mapCellRefs(xform) {
     const start = this.get('start');
     const end = this.get('end');
     const tab = start.get('tabId');
-    const rows = end.get('rowIdx') - start.get('rowIdx');
-    const cols = end.get('colIdx') - start.get('colIdx');
+    const startRow = start.get('rowIdx');
+    const endRow = end.get('rowIdx');
+    const startCol = start.get('colIdx');
+    const endCol = end.get('colIdx');
 
     const vals = [];
-    for ( let r = 0; r <= rows; ++r ) {
+    for ( let rowIdx = startRow; rowIdx <= endRow; ++rowIdx ) {
       vals.push([]);
-      for ( let c = 0; c <= cols; ++c ) {
-        vals[r][c] = xform(start.merge({rowIdx: r, colIdx: c}));
+      for ( let colIdx = startCol; colIdx <= endCol; ++colIdx ) {
+        vals[rowIdx - startRow][colIdx - startCol] = xform(start.merge({ rowIdx, colIdx }));
       }
     }
 
