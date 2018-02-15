@@ -15,7 +15,7 @@
     "README.md"
   ],
   "dependencies": {
-    "hot-formula-parser": "https://github.com/abrgr/formula-parser.git#68eae50d58306de2c9d92b75533d704b3e23519a",
+    "hot-formula-parser": "https://github.com/abrgr/formula-parser.git#f937f3bb0ba510b6ff2cf2f73346f61fdc97df6e",
     "immutable": "^3.8.2",
     "moment": "^2.20.1",
     "ssf": "^0.10.1"

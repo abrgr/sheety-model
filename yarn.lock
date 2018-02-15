@@ -992,6 +992,13 @@ home-or-tmp@^2.0.0:
     formulajs "github:handsontable/formula.js"
     tiny-emitter "^2.0.1"
 
+"hot-formula-parser@https://github.com/abrgr/formula-parser.git#f937f3bb0ba510b6ff2cf2f73346f61fdc97df6e":
+  version "2.3.1"
+  resolved "https://github.com/abrgr/formula-parser.git#f937f3bb0ba510b6ff2cf2f73346f61fdc97df6e"
+  dependencies:
+    formulajs "github:handsontable/formula.js"
+    tiny-emitter "^2.0.1"
+
 http-signature@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/http-signature/-/http-signature-1.1.1.tgz#df72e267066cd0ac67fb76adf8e134a8fbcf91bf"
