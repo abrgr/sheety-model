@@ -40,7 +40,7 @@ var coercer = _coerce2.default.bind(null, new _immutable.Map({
     return !!_arrayDataQuery ? '' + _arrayDataQuery : null;
   },
   config: function config(_config) {
-    return !!_config ? new _immutable.Map(_config) : null;
+    return !!_config ? (0, _immutable.fromJS)(_config) : null;
   }
 }));
 

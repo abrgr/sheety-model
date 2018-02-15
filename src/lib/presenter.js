@@ -1,4 +1,4 @@
-import { Record, Map, List } from 'immutable';
+import { fromJS, Record, Map, List } from 'immutable';
 import coerce from './coerce';
 
 const PresenterRecord = Record({
@@ -16,7 +16,7 @@ const coercer = coerce.bind(null, new Map({
   id: (id) => !!id ? ('' + id) : null,
   mapDataQuery: mapDataQuery => !!mapDataQuery ? new Map(mapDataQuery) : null,
   arrayDataQuery: arrayDataQuery => !!arrayDataQuery ? ('' + arrayDataQuery) : null,
-  config: config => !!config ? new Map(config) : null
+  config: config => !!config ? fromJS(config) : null
 }));
 
 export default class Presenter extends PresenterRecord {

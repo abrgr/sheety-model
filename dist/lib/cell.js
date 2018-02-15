@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _immutable = require('immutable');
 
-var _remoteRef = require('./remote-ref');
-
-var _remoteRef2 = _interopRequireDefault(_remoteRef);
-
 var _cellFormat = require('./cell-format');
 
 var _cellFormat2 = _interopRequireDefault(_cellFormat);
@@ -30,7 +26,6 @@ var CellRecord = (0, _immutable.Record)({
   staticValue: null,
   formula: null,
   isUserEditable: false,
-  remoteValue: null,
   link: null,
   format: new _cellFormat2.default()
 }, 'Cell');
@@ -44,9 +39,6 @@ var coercer = _coerce2.default.bind(null, new _immutable.Map({
   },
   isUserEditable: function isUserEditable(_isUserEditable) {
     return !!_isUserEditable;
-  },
-  remoteValue: function remoteValue(_remoteValue) {
-    return !!_remoteValue ? new _remoteRef2.default(_remoteValue) : null;
   },
   link: function link(_link) {
     return !!_link ? '' + _link : null;

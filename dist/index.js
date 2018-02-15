@@ -3,15 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Presenter = exports.Sheet = exports.CellRefRange = exports.CellRef = exports.Tab = exports.RemoteRef = exports.Cell = undefined;
+exports.Presenter = exports.Sheet = exports.CellRefRange = exports.CellRef = exports.Tab = exports.Cell = undefined;
 
 var _cell = require('./lib/cell');
 
 var _cell2 = _interopRequireDefault(_cell);
-
-var _remoteRef = require('./lib/remote-ref');
-
-var _remoteRef2 = _interopRequireDefault(_remoteRef);
 
 var _tab = require('./lib/tab');
 
@@ -36,7 +32,6 @@ var _presenter2 = _interopRequireDefault(_presenter);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Cell = _cell2.default;
-exports.RemoteRef = _remoteRef2.default;
 exports.Tab = _tab2.default;
 exports.CellRef = _cellRef2.default;
 exports.CellRefRange = _cellRefRange2.default;
