@@ -54,21 +54,55 @@ const toFormatableValue = Object.freeze({
   SCIENTIFIC: probablyToNum
 });
 
+const fromUserEnteredNum = (maybeNum) => {
+  if ( typeof maybeNum === 'number' ) {
+    return maybeNum;
+  }
+
+  const [n] = /[-]?\d[\d,.]+|[,.][\d,.]+/.exec(maybeNum);
+  if ( !n ) {
+    return NaN;
+  }
+
+  // TODO: we should actually figure out what the locale uses for a decimal separator
+  // now, try to guess at a locale to deal with decimals
+  const lastComma = n.lastIndexOf(',');
+  const lastDecimal = n.lastIndexOf('.');
+
+  if ( lastComma > lastDecimal ) {
+    // we're either European with a decimal or US without a decimal
+    if ( lastDecimal >= 0 ) {
+      // if we have both, we are much more likely European with a decimal
+      return parseFloat(n.replace('.', '').replace(',', '.'));
+    }
+
+    // otherwise, we assume we're US
+    return parseInt(n.replace(',', ''), 10);
+  } else if ( lastDecimal > lastComma ) {
+    // we're either US with a decimal or European without a decimal
+    // just assume we're US for now
+    return parseFloat(n.replace(',', ''));
+  }
+
+  // we have no comma or decimal
+  return parseInt(n, 10);
+};
+
 const userEnteredValueToSheetValue = Object.freeze({
   TEXT: (val) => '' + val,
-  NUMBER: (val) => +val,
-  PERCENT: (val) => (+val) / 100,
-  CURRENCY: (val) => {
-    const match = /[0-9]*[.,][0-9]*/.exec('' + val);
-    if ( !match ) {
-      return NaN;
-    }
-    return parseFloat(match[0]);
-  },
+  NUMBER: fromUserEnteredNum,
+  PERCENT: (val) => fromUserEnteredNum(val) / 100,
+  CURRENCY: fromUserEnteredNum,
   DATE: (val) => moment(val).diff(moment('1899-12-30'), 'days'),
   TIME: (val) => moment(val), // TODO: is this right?
   DATE_TIME: (val) => moment(val).diff(moment('1899-12-30')) / 86400000,
-  SCIENTIFIC: (val) => +val
+  SCIENTIFIC: (val) => {
+    if ( typeof val === 'string' && val.indexOf('e') > 0 ) {
+      return parseFloat(val);
+    }
+
+    return fromUserEnteredNum(val);
+  }
 });
 
 const CellFormatRecord = Record({
