@@ -21,6 +21,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PresenterRecord = (0, _immutable.Record)({
   // string id of the presenter
   id: null,
+  // type of the presenter
+  type: null,
   // Map from string keys to formulas intended to be evaluated against spreadsheet data
   mapDataQuery: new _immutable.Map(),
   // Array data query
@@ -32,6 +34,9 @@ var PresenterRecord = (0, _immutable.Record)({
 var coercer = _coerce2.default.bind(null, new _immutable.Map({
   id: function id(_id) {
     return !!_id ? '' + _id : null;
+  },
+  type: function type(_type) {
+    return !!_type ? '' + _type : null;
   },
   mapDataQuery: function mapDataQuery(_mapDataQuery) {
     return !!_mapDataQuery ? new _immutable.Map(_mapDataQuery) : null;
