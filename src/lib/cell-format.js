@@ -59,10 +59,12 @@ const fromUserEnteredNum = (maybeNum) => {
     return maybeNum;
   }
 
-  const [n] = /[-]?\d[\d,.]+|[,.][\d,.]+/.exec(maybeNum);
-  if ( !n ) {
+  const match = /[-]?\d[\d,.]*|[,.][\d,.]+/.exec(maybeNum);
+  if ( !match ) {
     return NaN;
   }
+
+  const n = '' + maybeNum;
 
   // TODO: we should actually figure out what the locale uses for a decimal separator
   // now, try to guess at a locale to deal with decimals
