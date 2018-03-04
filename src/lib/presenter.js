@@ -7,9 +7,9 @@ const PresenterRecord = Record({
   // type of the presenter
   type: null,
   // Map from string keys to formulas intended to be evaluated against spreadsheet data
-  mapDataQuery: new Map(),
+  mapData: new Map(),
   // Array data query
-  arrayDataQuery: null,
+  arrayData: null,
   // Arbitrary key/value pairs provided to the presenter
   config: new Map()
 }, 'Presenter');
@@ -17,8 +17,8 @@ const PresenterRecord = Record({
 const coercer = coerce.bind(null, new Map({
   id: (id) => !!id ? ('' + id) : null,
   type: (type) => !!type ? ('' + type) : null,
-  mapDataQuery: mapDataQuery => !!mapDataQuery ? new Map(mapDataQuery) : null,
-  arrayDataQuery: arrayDataQuery => !!arrayDataQuery ? ('' + arrayDataQuery) : null,
+  mapData: mapData => !!mapData ? new Map(mapData) : null,
+  arrayData: arrayData => !!arrayData ? ('' + arrayData) : null,
   config: config => !!config ? fromJS(config) : null
 }));
 

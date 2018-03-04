@@ -25,6 +25,10 @@ export default class CellRefRange extends CellRefRangeRecord {
   }
 
   static fromA1Ref(ref) {
+    if ( !ref ) {
+      return null;
+    }
+
     // the structure of a ref is <tab><from ref>:<to ref>
     // <tab> may include a colon so the final colon must be the separator
     const lastColonIdx = ref.lastIndexOf(':');
@@ -32,11 +36,15 @@ export default class CellRefRange extends CellRefRangeRecord {
     const to = ref.slice(lastColonIdx + 1);
 
     const start = CellRef.fromA1Ref(from);
-    const end = CellRef.fromA1Ref(to).set('tabId', start.get('tabId'));
+    const end = CellRef.fromA1Ref(to);
+
+    if ( !start || !end ) {
+      return null;
+    }
 
     return new CellRefRange({
       start,
-      end
+      end: end.set('tabId', start.get('tabId'))
     });
   }
 
@@ -58,5 +66,12 @@ export default class CellRefRange extends CellRefRangeRecord {
     }
 
     return vals;
+  }
+
+  toA1Ref() {
+    const startRef = this.get('start').toA1Ref();
+    const endRef = this.get('end').toA1RefWithoutTab();
+
+    return `${startRef}:${endRef}`;
   }
 }

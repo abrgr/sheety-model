@@ -68,6 +68,14 @@ var CellRefRange = function (_CellRefRangeRecord) {
 
       return vals;
     }
+  }, {
+    key: 'toA1Ref',
+    value: function toA1Ref() {
+      var startRef = this.get('start').toA1Ref();
+      var endRef = this.get('end').toA1RefWithoutTab();
+
+      return startRef + ':' + endRef;
+    }
   }], [{
     key: 'of',
     value: function of(tab, startRow, startCol, endRow, endCol) {
@@ -79,6 +87,10 @@ var CellRefRange = function (_CellRefRangeRecord) {
   }, {
     key: 'fromA1Ref',
     value: function fromA1Ref(ref) {
+      if (!ref) {
+        return null;
+      }
+
       // the structure of a ref is <tab><from ref>:<to ref>
       // <tab> may include a colon so the final colon must be the separator
       var lastColonIdx = ref.lastIndexOf(':');
@@ -86,11 +98,15 @@ var CellRefRange = function (_CellRefRangeRecord) {
       var to = ref.slice(lastColonIdx + 1);
 
       var start = _cellRef2.default.fromA1Ref(from);
-      var end = _cellRef2.default.fromA1Ref(to).set('tabId', start.get('tabId'));
+      var end = _cellRef2.default.fromA1Ref(to);
+
+      if (!start || !end) {
+        return null;
+      }
 
       return new CellRefRange({
         start: start,
-        end: end
+        end: end.set('tabId', start.get('tabId'))
       });
     }
   }]);

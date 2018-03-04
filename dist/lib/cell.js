@@ -25,8 +25,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var CellRecord = (0, _immutable.Record)({
   staticValue: null,
   formula: null,
-  isUserEditable: false,
-  link: null,
   format: new _cellFormat2.default()
 }, 'Cell');
 
@@ -36,12 +34,6 @@ var coercer = _coerce2.default.bind(null, new _immutable.Map({
   },
   formula: function formula(_formula) {
     return !!_formula ? '' + _formula : null;
-  },
-  isUserEditable: function isUserEditable(_isUserEditable) {
-    return !!_isUserEditable;
-  },
-  link: function link(_link) {
-    return !!_link ? '' + _link : null;
   },
   format: function format(_format) {
     return new _cellFormat2.default(_format);

@@ -57,6 +57,11 @@ var CellRef = function (_CellRefRecord) {
       return (0, _hotFormulaParser.toLabel)({ index: this.get('rowIdx') }, { index: this.get('colIdx') }, this.get('tabId'));
     }
   }, {
+    key: 'toA1RefWithoutTab',
+    value: function toA1RefWithoutTab() {
+      return (0, _hotFormulaParser.toLabel)({ index: this.get('rowIdx') }, { index: this.get('colIdx') });
+    }
+  }, {
     key: 'whenValid',
     value: function whenValid(fn) {
       if (this.get('tabId')) {
@@ -70,6 +75,10 @@ var CellRef = function (_CellRefRecord) {
           _extractLabel2 = _slicedToArray(_extractLabel, 2),
           row = _extractLabel2[0],
           col = _extractLabel2[1];
+
+      if (!row || !col) {
+        return null;
+      }
 
       var rowIdx = row.index;
       var colIdx = col.index;
@@ -88,6 +97,10 @@ var CellRef = function (_CellRefRecord) {
           row = _extractLabel4[0],
           col = _extractLabel4[1],
           tabId = _extractLabel4[2];
+
+      if (!row || !col) {
+        return null;
+      }
 
       var rowIdx = row.index;
       var colIdx = col.index;

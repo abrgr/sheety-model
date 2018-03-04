@@ -21,6 +21,11 @@ export default class CellRef extends CellRefRecord {
 
   static fromTabAndA1Ref(tab, ref) {
     const [row, col] = extractLabel(ref);
+
+    if ( !row || !col ) {
+      return null;
+    }
+
     const rowIdx = row.index;
     const colIdx = col.index;
 
@@ -33,6 +38,11 @@ export default class CellRef extends CellRefRecord {
 
   static fromA1Ref(ref) {
     const [row, col, tabId] = extractLabel(ref);
+
+    if ( !row || !col ) {
+      return null;
+    }
+
     const rowIdx = row.index;
     const colIdx = col.index;
 
@@ -56,6 +66,13 @@ export default class CellRef extends CellRefRecord {
       { index: this.get('rowIdx') },
       { index: this.get('colIdx') },
       this.get('tabId')
+    );
+  }
+
+  toA1RefWithoutTab() {
+    return toLabel(
+      { index: this.get('rowIdx') },
+      { index: this.get('colIdx') }
     );
   }
 
