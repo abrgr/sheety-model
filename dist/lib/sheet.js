@@ -29,10 +29,22 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SheetRecord = (0, _immutable.Record)({
+  providerId: null,
+  providerUrl: null,
+  title: null,
   tabsById: new _immutable.Map()
 }, 'Sheet');
 
 var coercer = _coerce2.default.bind(null, new _immutable.Map({
+  providerId: function providerId(_providerId) {
+    return !!_providerId ? '' + _providerId : null;
+  },
+  providerUrl: function providerUrl(_providerUrl) {
+    return !!_providerUrl ? '' + _providerUrl : null;
+  },
+  title: function title(_title) {
+    return !!_title ? '' + _title : null;
+  },
   tabsById: function tabsById(_tabsById) {
     return new _immutable.Map(_tabsById).map(function (tab) {
       return new _tab2.default(tab);
@@ -48,13 +60,13 @@ var Sheet = function (_SheetRecord) {
 
     var tabs = params && _immutable.Iterable.isIterable(params) ? params.get('tabs') : params.tabs;
 
-    return _possibleConstructorReturn(this, (Sheet.__proto__ || Object.getPrototypeOf(Sheet)).call(this, coercer(tabs ? {
+    return _possibleConstructorReturn(this, (Sheet.__proto__ || Object.getPrototypeOf(Sheet)).call(this, coercer(tabs ? new _immutable.Map(params).merge({
       tabsById: new _immutable.List(tabs).groupBy(function (t) {
         return t.get('id');
       }).map(function (t) {
         return t.first();
       })
-    } : params)));
+    }) : params)));
   }
 
   /**

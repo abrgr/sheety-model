@@ -4,10 +4,16 @@ import CellRef from './cell-ref';
 import coerce from './coerce';
 
 const SheetRecord = Record({
+  providerId: null,
+  providerUrl: null,
+  title: null,
   tabsById: new Map()
 }, 'Sheet');
 
 const coercer = coerce.bind(null, new Map({
+  providerId: providerId => !!providerId ? '' + providerId : null,
+  providerUrl: providerUrl => !!providerUrl ? '' + providerUrl : null,
+  title: title => !!title ? '' + title : null,
   tabsById: tabsById => new Map(tabsById).map(tab => new Tab(tab))
 }));
 
@@ -20,10 +26,10 @@ export default class Sheet extends SheetRecord {
     super(
       coercer(
         tabs
-          ? {
+          ? new Map(params).merge({
             tabsById: new List(tabs).groupBy(t => t.get('id'))
                                     .map(t => t.first())
-          } : params
+          }) : params
       )
     );
   }
